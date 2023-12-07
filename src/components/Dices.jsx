@@ -6,7 +6,6 @@ import Confetti from "react-confetti";
 export default function Dices({ handleCount }) {
   const [dices, setDices] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
-
   useEffect(() => {
     const isHeldValue = dices.every((dice) => dice.isHeld);
     const firstDiceNumber = dices[0].number;
@@ -22,7 +21,7 @@ export default function Dices({ handleCount }) {
     for (let i = 0; i < 10; i++) {
       newDices.push({
         id: nanoid(4),
-        number: Math.floor(Math.random() * 7),
+        number: Math.floor(Math.random() * 6) + 1,
         isHeld: false,
       });
     }
@@ -37,7 +36,7 @@ export default function Dices({ handleCount }) {
             ? preDice
             : {
                 id: nanoid(4),
-                number: Math.floor(Math.random() * 7),
+                number: Math.floor(Math.random() * 6) + 1,
                 isHeld: false,
               };
         });
