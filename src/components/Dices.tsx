@@ -3,9 +3,14 @@ import { nanoid } from "nanoid";
 import Die from "./Die";
 import Confetti from "react-confetti";
 
-export default function Dices({ handleCount }) {
+type DicesProps = {
+  handleCount: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function Dices({ handleCount }: DicesProps) {
   const [dices, setDices] = useState(allNewDice());
   const [tenzies, setTenzies] = useState(false);
+
   useEffect(() => {
     const isHeldValue = dices.every((dice) => dice.isHeld);
     const firstDiceNumber = dices[0].number;
@@ -16,6 +21,7 @@ export default function Dices({ handleCount }) {
       setTenzies(true);
     }
   }, [dices]);
+
   function allNewDice() {
     const newDices = [];
     for (let i = 0; i < 10; i++) {
@@ -28,6 +34,7 @@ export default function Dices({ handleCount }) {
     return newDices;
   }
 
+  // Roll Dices Function
   function rollDice() {
     if (!tenzies) {
       setDices((preDices) => {
@@ -49,7 +56,8 @@ export default function Dices({ handleCount }) {
     }
   }
 
-  function Hold(Id) {
+  // Hold a Dice Function
+  function Hold(Id: string) {
     setDices((preDices) => {
       return preDices.map((dice) =>
         dice.id === Id ? { ...dice, isHeld: !dice.isHeld } : dice
@@ -57,14 +65,14 @@ export default function Dices({ handleCount }) {
     });
   }
 
-  const dieElm = dices.map((dice) => (
-    <Die key={dice.id} value={dice} holdDie={() => Hold(dice.id)} />
-  ));
-
   return (
     <>
       {tenzies && <Confetti />}
-      <div className="dices">{dieElm}</div>
+      <div className="dices">
+        {dices.map((dice) => (
+          <Die key={dice.id} value={dice} holdDie={() => Hold(dice.id)} />
+        ))}
+      </div>
       <button className="btn" onClick={rollDice}>
         {tenzies ? "Play Again!" : "Roll"}
       </button>
